@@ -10,9 +10,22 @@ include_directories(
         ${OPENSCENEGRAPH_INCLUDE_DIRS} 
 )
 
-file( GLOB_RECURSE VIEWER_SFCGAL_HEADERS ./*.h )
-file( GLOB_RECURSE VIEWER_SFCGAL_HEADERS_MOC ./include/SFCGAL/*.h )
-file( GLOB_RECURSE VIEWER_SFCGAL_SOURCES ./*.cpp )
+file( GLOB VIEWER_SFCGAL_HEADERS RELATIVE_PATH
+        ${PROJECT_SOURCE_DIR}
+        db.h
+)
+file( GLOB VIEWER_SFCGAL_HEADERS_MOC RELATIVE_PATH
+        ${PROJECT_SOURCE_DIR}
+        include/SFCGAL/viewer/*.h
+        include/SFCGAL/viewer/plugins/*.h
+)
+file( GLOB VIEWER_SFCGAL_SOURCES RELATIVE_PATH
+        ${PROJECT_SOURCE_DIR}
+        main.cpp
+        src/db.cpp
+        src/SFCGAL/viewer/*.cpp
+        src/SFCGAL/viewer/plugins/*.cpp
+)
 
 QT4_WRAP_CPP(VIEWER_SFCGAL_MOC ${VIEWER_SFCGAL_HEADERS_MOC})
 
@@ -25,7 +38,7 @@ add_executable( viewer-SFCGAL
 set(QT_LIBRARIES QtCore QtGui)
 set_target_properties( viewer-SFCGAL PROPERTIES DEBUG_POSTFIX "d" )
 target_link_libraries( viewer-SFCGAL
-        SFCGAL
+        CGAL CGAL_Core SFCGAL
         ${OPENSCENEGRAPH_LIBRARIES}  
         ${QT_LIBRARIES}
         ${CGAL_LIBRARIES}
